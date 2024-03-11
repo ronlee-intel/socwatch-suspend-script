@@ -1,0 +1,36 @@
+#!/bin/bash
+
+source setup_socwatch_env.sh
+
+if ! dmidecode -s system-family | grep -q 'Rex'; then
+    echo 0 > /proc/sys/kernel/loadpin/enforce
+    insmod driver/socwatch2_15.ko
+fi
+
+socwatch_suspend_file="${SOCWATCH_INSTALL_PATH}/suspend_stress_test.socwatch"
+suspend_file="/usr/bin/suspend_stress_test"
+orig_suspend_file="${SOCWATCH_INSTALL_PATH}/suspend_stress_test.orig"
+
+socwatch_powerd_file="${SOCWATCH_INSTALL_PATH}/powerd_dbus_suspend.socwatch"
+powerd_file="/usr/bin/powerd_dbus_suspend"
+orig_powerd_file="${SOCWATCH_INSTALL_PATH}/powerd_dbus_suspend.orig"
+
+head -5 ${suspend_file} | grep -q "ChromiumOS"
+if [ $? -eq 0 ]; then
+   echo "Backup the original suspend_stress_test"
+   cp ${suspend_file} ${orig_suspend_file}
+fi
+
+echo "Install suspend_stress_test.socwatch"
+cp ${socwatch_suspend_file} ${suspend_file}
+
+file_type=$(file "$powerd_file")
+if [[ "$file_type" == *"ELF"* ]]; then
+  echo "Backup the original powerd_dbus_suspend"
+  cp ${powerd_file} ${orig_powerd_file}
+fi
+
+echo "Install powerd_dbus_suspend.socwatch"
+cp ${socwatch_powerd_file} ${powerd_file}
+
+mkdir -p /var/run/socwatch_suspend

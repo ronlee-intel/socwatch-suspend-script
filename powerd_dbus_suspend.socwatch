@@ -1,0 +1,12 @@
+wakeup_count_file="/var/run/socwatch_suspend/wakeup_count"
+
+if [ -z ${SOCWATCH_INSTALL_PATH+x} ]; then
+   export SOCWATCH_INSTALL_PATH="/usr/local/socwatch_chrome_CUSTOM"
+fi
+
+if [ -f "$wakeup_count_file" ]; then
+   wakeup_count=$(cat "$wakeup_count_file")
+   ${SOCWATCH_INSTALL_PATH}/powerd_dbus_suspend.orig ${@} --wakeup_count=${wakeup_count}
+else
+   ${SOCWATCH_INSTALL_PATH}/powerd_dbus_suspend.orig ${@}
+fi

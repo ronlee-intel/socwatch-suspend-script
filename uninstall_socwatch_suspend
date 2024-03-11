@@ -1,0 +1,25 @@
+#!/bin/bash
+
+source setup_socwatch_env.sh
+
+suspend_file="/usr/bin/suspend_stress_test"
+orig_suspend_file="${SOCWATCH_INSTALL_PATH}/suspend_stress_test.orig"
+
+powerd_file="/usr/bin/powerd_dbus_suspend"
+orig_powerd_file="${SOCWATCH_INSTALL_PATH}/powerd_dbus_suspend.orig"
+
+if [ -f "${orig_suspend_file}" ]; then
+  echo "Restoring the original suspend_stress_test"
+  cp ${orig_suspend_file} ${suspend_file}
+fi
+
+if [ -f "${orig_powerd_file}" ]; then
+  echo "Restoring the original powerd_dbus_suspend"
+  cp ${orig_powerd_file} ${powerd_file}
+fi
+
+rm -rf /var/run/socwatch_suspend
+
+if ! dmidecode -s system-family | grep -q 'Rex'; then
+    rmmod socwatch2_15
+fi
