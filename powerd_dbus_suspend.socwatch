@@ -1,7 +1,7 @@
 wakeup_count_file="/var/run/socwatch_suspend/wakeup_count"
 
 if [ -z ${SOCWATCH_INSTALL_PATH+x} ]; then
-   export SOCWATCH_INSTALL_PATH="/usr/local/socwatch_chrome_CUSTOM"
+   export SOCWATCH_INSTALL_PATH="$(< /var/lib/socwatch_suspend/install_path)"
 fi
 
 if [ -f "$wakeup_count_file" ]; then

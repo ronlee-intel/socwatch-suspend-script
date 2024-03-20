@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source setup_socwatch_env.sh
+SOCWATCH_INSTALL_PATH=$(< /var/lib/socwatch_suspend/install_path)
+echo "SOCWATCH_INSTALL_PATH: ${SOCWATCH_INSTALL_PATH}"
+
+source ${SOCWATCH_INSTALL_PATH}/setup_socwatch_env.sh
 
 suspend_file="/usr/bin/suspend_stress_test"
 orig_suspend_file="${SOCWATCH_INSTALL_PATH}/suspend_stress_test.orig"
@@ -19,6 +22,7 @@ if [ -f "${orig_powerd_file}" ]; then
 fi
 
 rm -rf /var/run/socwatch_suspend
+rm -rf /var/lib/socwatch_suspend/install_path
 
 if ! dmidecode -s system-family | grep -q 'Rex'; then
     rmmod socwatch2_15

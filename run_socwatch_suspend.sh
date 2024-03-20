@@ -1,5 +1,4 @@
 #!/bin/bash
-
 wakeup_count=""
 suspend_for_sec=""
 

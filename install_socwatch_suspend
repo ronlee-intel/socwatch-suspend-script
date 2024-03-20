@@ -1,10 +1,16 @@
 #!/bin/bash
 
-source setup_socwatch_env.sh
+mkdir -p /var/lib/socwatch_suspend/
+echo "$PWD" > /var/lib/socwatch_suspend/install_path
+
+SOCWATCH_INSTALL_PATH=$(< /var/lib/socwatch_suspend/install_path)
+echo "SOCWATCH_INSTALL_PATH: ${SOCWATCH_INSTALL_PATH}"
+
+source ${SOCWATCH_INSTALL_PATH}/setup_socwatch_env.sh
 
 if ! dmidecode -s system-family | grep -q 'Rex'; then
     echo 0 > /proc/sys/kernel/loadpin/enforce
-    insmod driver/socwatch2_15.ko
+    insmod ${SOCWATCH_INSTALL_PATH}/driver/socwatch2_15.ko
 fi
 
 socwatch_suspend_file="${SOCWATCH_INSTALL_PATH}/suspend_stress_test.socwatch"
