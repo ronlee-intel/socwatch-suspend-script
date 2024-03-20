@@ -18,6 +18,14 @@ while [ $# -gt 0 ]; do
       pre_suspend_cmd="${1#*=}"
       shift
       ;;
+    --post_resume_command)
+      post_resume_cmd="$2"
+      shift 2
+      ;;
+    --post_resume_command=*)
+      post_resume_cmd="${1#*=}"
+      shift
+      ;;
     *)
       suspend_args+="$1 "
       shift
@@ -27,5 +35,6 @@ done
 
 echo "suspend_args: ${suspend_args}"
 echo "pre_suspend_cmd: ${pre_suspend_cmd}"
+echo "post_resume_cmd: ${post_resume_cmd}"
 
-${orig_suspend_file} --pre_suspend_command ". ${SOCWATCH_INSTALL_PATH}/pre_socwatch_suspend.sh ${pre_suspend_cmd}" ${suspend_args}
+${orig_suspend_file} --pre_suspend_command ". ${SOCWATCH_INSTALL_PATH}/pre_socwatch_suspend.sh ${pre_suspend_cmd}" --post_resume_command ". ${SOCWATCH_INSTALL_PATH}/post_socwatch_resume.sh ${post_resume_cmd}" ${suspend_args}
