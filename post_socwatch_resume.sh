@@ -1,3 +1,7 @@
+# Add your post_resume debugging commands below
+# ex: cat /sys/kernel/debug/pmc_core/slp_s0_residency_usec
+#     cat /sys/kernel/debug/pmc_core/substate_residencies
+
 
 # Remove SOCWatch logs older than 10 minutes
 find /var/log/socwatch -mmin +10 -type f -exec rm -fv {} \;

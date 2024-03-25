@@ -13,3 +13,7 @@ if [ -n "$pre_suspend_cmd" ]; then
   echo "Running: ${pre_suspend_cmd}"
   ${pre_suspend_cmd}
 fi
+
+# Add your pre_suspend debugging commands below
+# ex: cat /sys/kernel/debug/pmc_core/slp_s0_residency_usec
+#     cat /sys/kernel/debug/pmc_core/substate_residencies
